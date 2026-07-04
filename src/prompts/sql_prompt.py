@@ -129,11 +129,3 @@ WHERE player_name = 'Stephen Curry'
 AND normalized_season_year= 2022
 GROUP BY player_name;
 """
-
-
-SQL_AGENT_USER_PROMPT = """
-
-
-
-
-"""

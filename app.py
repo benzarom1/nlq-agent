@@ -159,14 +159,6 @@ The question is unrelated to NBA statistics.
 
 ---
 
-### Missing schema fields
-**Question:**  
-Which Canadian players scored 40+ points?
-
-**Reason:**  
-Player birthplace information is not available.
-
----
 
 ## Tip
 

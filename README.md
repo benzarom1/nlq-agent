@@ -567,8 +567,8 @@ Do nationally televised games produce higher attendance or merchandise sales?
 ```
 
 ```text
-How does the attendance change in games after a major trade or player signing?```
-
+How does the attendance change in games after a major trade or player signing?
+```
 
 
 This would shift the system from player performance analytics toward broader sports business intelligence.
@@ -821,5 +821,3 @@ A production deployment should also include:
 - Model versioning
 - Monitoring and alerting
 - User feedback loop
-
-These were intentionally left out of the current implementation because the exercise prioritizes agent logic, code quality, and clear reasoning over production infrastructure.

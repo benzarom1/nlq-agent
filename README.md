@@ -50,7 +50,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 3. Launch the Application
+### 3. Add .env file:
+
+```
+OPENAI_API_KEY= <KEY HERE>
+```
+
+### 4. Launch the Application
 ```
 python app.py
 ```

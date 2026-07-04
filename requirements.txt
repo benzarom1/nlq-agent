@@ -1,0 +1,33 @@
+# LLM & Agent Framework
+langgraph
+langchain
+langchain-openai
+openai
+
+# Database
+duckdb
+sqlalchemy
+
+# Data Processing
+pandas
+numpy
+
+# Web Interface
+streamlit
+gradio
+
+# Environment Variables
+python-dotenv
+
+# Validation & Configuration
+pydantic
+
+# Optional: Better Data Generation
+faker
+
+# Optional: Logging & Progress
+rich
+tqdm
+
+#test
+pytest

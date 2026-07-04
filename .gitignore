@@ -1,0 +1,9 @@
+.venv
+.env
+csv_merging.py
+/scripts/
+data/*.csv
+test*
+*.csv
+/.vscode/
+*.pyc

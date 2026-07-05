@@ -18,7 +18,6 @@ def sql_agent(state: NLQState) -> dict:
 
     question = state["messages"][-1].content
     schema_context = database.get_schema()
-
     sql_llm = llm.with_structured_output(SQLGeneration)
 
     result = sql_llm.invoke([

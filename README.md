@@ -10,41 +10,87 @@ The application uses a graph-based agent architecture for interpretability, SQL 
 
 ### 1. Prerequisites
 
-- Python 3.9+
-- OpenAI API key (in `.env`)
-- game_data_enriched.csv (in `data/`)
-- A DuckDB database file already available (no need to initialize)
+Before running the application, ensure you have:
 
-### 2. Installation
+- Python 3.12 or higher
+- OpenAI API key configured in `.env`
+- DuckDB database initialized locally
 
-Clone the repository and install Python dependencies:
+Verify your Python version:
 
 ```bash
-git clone https://github.com/benzarom1/nlq-agent
-cd nlq-agent
-python3 -m venv .venv
+python3 --version
+```
+
+Expected:
+
+```text
+Python 3.12+
+```
+
+If your Python version is below 3.12, install a newer version before continuing.
+
+---
+
+### 2. Create Virtual Environment
+
+Create a virtual environment using Python 3.12 or higher:
+
+```bash
+python3.12 -m venv .venv
+```
+
+Activate the environment:
+
+Mac/Linux:
+
+```bash
 source .venv/bin/activate
+```
+
+Windows:
+
+```powershell
+.venv\Scripts\activate
+```
+
+Verify the virtual environment is using Python 3.12+:
+
+```bash
+python --version
+```
+
+Expected:
+
+```text
+Python 3.12+
+```
+
+---
+
+### 3. Installation
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Add .env file:
-- Create .env file and place in nlq-agent directory. 
-- Ensure it is initialized with OPENAI_API_KEY.
-- View .env.template for example .env file.
-```
-OPENAI_API_KEY=<KEY>
-```
+---
 
-### 4. Launch the Application:
-```
+### 4. Launch Application
+
+Run:
+
+```bash
 python app.py
 ```
 
-### 5. Navigate  to:
+Open:
+
+```text
+http://localhost:7860/
 ```
-http://127.0.0.1:7860
-```
-**Google Chrome reccomended for best Gradio Support**
 
 ## Dataset Choice
 

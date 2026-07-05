@@ -19,14 +19,3 @@ gradio==6.19.0
 python-dotenv==1.2.2
 
 # Validation & Configuration
-pydantic==2.13.4
-
-# Optional: Better Data Generation
-faker==40.28.1
-
-# Optional: Logging & Progress
-rich==15.0.0
-tqdm==4.68.3
-
-#test
-pytest==9.1.1

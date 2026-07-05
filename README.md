@@ -1019,5 +1019,5 @@ A production deployment should also include:
 
 ## Ai Tool Usage
 
-- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4
+- GitHub Copilot: OpenAi Gpt-5.4
 =======

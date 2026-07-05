@@ -1,55 +1,34 @@
-
-# nlq-agent
-
-**Natural Language Query Agent for NBA Player Box Score Analytics**
-
----
-
 ## Introduction
 
-`nlq-agent` is a modular, LLM-powered analytics agent that lets users query over a decade of NBA player box score data with natural language. You can ask basketball questions in plain English, and the agent generates, validates, and executes SQL on your local DuckDB to retrieve and summarize player stats and team information. The web app leverages a graph-based agent architecture for interpretability and robust error handling, exposing an intuitive chatbot UI for end users and full execution state for developers.
+`nlq-agent` is a modular, LLM-powered analytics agent that lets users query NBA player box score and synthetic game attendance data with natural language. Users can ask basketball questions in plain English, and the agent generates, validates, and executes SQL on a local DuckDB database to retrieve and summarize player statistics, team information, game attendance, and combined player-attendance analysis.
+
+The application uses a graph-based agent architecture for interpretability, SQL safety, and robust error handling. It exposes an intuitive chatbot UI for end users and a full execution state viewer for developers.
 
 ---
 
-## Table of Contents
+## Dataset Choice
 
-- [Introduction](#introduction)
-- [Table of Contents](#table-of-contents)
-- [Startup Guide](#startup-guide)
-- [Dataset Choice](#dataset-choice)
-- [Foundational Model Choice](#foundational-model-choice)
-- [Code Quality and Architecture](#code-quality-and-architecture)
-  - [Architecture Layout](#high-level-architecture)
-  - [Directory Responsibilities](#directory-responsibilities)
-  - [Agent Responsibilities](#agent-responsibilities)
-  - [Node Responsibilities](#node-responsibilities)
-  - [Graph Architecture](#graph-architecture)
-  - [NLQState](#nlqstate)
-- [Future Next Steps](#future-next-steps)
+This project uses an NBA player box score dataset covering the 2010-2023 seasons, along with a synthetic attendance dataset generated for each game.
 
----
+The data is stored locally in DuckDB for fast analytical querying and simple setup.
 
-## Startup Guide
+### Dataset Tables
 
-### 1. Prerequisites
+The database currently uses two main tables:
 
-- Python 3.9+
-- OpenAI API key (in `.env`)
-- game_data_enriched.csv (in `data/`)
-- A DuckDB database file already available (no need to initialize)
-
-### 2. Installation
-
-Clone the repository and install Python dependencies:
-
-```bash
-git clone <repo_url>
-cd nlq-agent
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+```text
+player_game_stats
+game_attendance
 ```
 
+These tables are intentionally kept separate.
+
+The reason for not merging the player statistics and attendance data into one table is to demonstrate multi-table SQL query generation. This allows the SQL agent to reason about when joins are necessary and generate queries that combine player-level and game-level data correctly.
+
+---
+
+## Player Game Stats Table
+=======
 ### 3. Add .env file:
 
 ```
@@ -61,20 +40,18 @@ OPENAI_API_KEY= <KEY HERE>
 python app.py
 ```
 
-Visit the Gradio web UI at:
-http://localhost:7860/
-## Dataset Choice
+The `player_game_stats` table stores player box score data at the player-game level.
 
-This project uses an NBA player box score dataset covering the 2010-2024 seasons. The dataset is stored locally in DuckDB for fast analytical querying and simple setup.
+Each row represents one player's performance in one NBA game.
 
-### Dataset Schema
+Example fields include:
 
 ```text
 season_year,
 normalized_season_year,
-normalized_game_date
 game_date,
-gameId,
+normalized_game_date,
+player_stats_gameId,
 matchup,
 teamId,
 teamCity,
@@ -105,42 +82,122 @@ blocks,
 turnovers,
 foulsPersonal,
 points,
-plusMinusPoints,
-matchup_team_tricode,
-opponent_team_tricode,
-team_side_from_matchup,
-rowTeamIdFromTricode,
-opponentTeamId,
+plusMinusPoints
+```
+
+---
+
+## Game Attendance Table
+
+The `game_attendance` table stores synthetic game-level attendance data.
+
+Each row represents one NBA game.
+
+Example fields include:
+
+```text
+attendance_gameId,
+attendance,
+homeTeam,
+awayTeam,
+gameDate,
+normalizedGameDate,
+normalizedGameDatetime,
+teamTricode,
+homeCity,
+awayCity,
 homeTeamId,
 awayTeamId
 ```
 
-### Storage Choice
+The join relationship between the tables is:
 
-The dataset is loaded into a local DuckDB database.
+```sql
+player_game_stats.player_stats_gameId = game_attendance.attendance_gameId
+```
 
-DuckDB was chosen because it is lightweight, fast for analytical workloads, easy to run locally, and does not require database server infrastructure. This makes it a good fit for a focused natural language analytics prototype.
+---
 
-### Reason for Dataset Selection
+## Synthetic Attendance Data
 
-I chose NBA player box score data because it is an expansive sports dataset with rich statistical fields. It allows the agent to answer questions about player performance, team trends, scoring, efficiency, three-point shooting, assists, rebounds, home/away performance, and changes in play style over time.
+The attendance data used in this project is synthetic. It was generated to simulate realistic NBA attendance numbers based on team and game information.
 
-Because the dataset spans 2011-2024, it can support analysis across a meaningful 14-year window. This makes it possible to explore larger basketball trends, such as:
+The synthetic attendance table includes:
 
-- Growth in three-point volume
-- Increases in high-scoring games
-- Changes in shooting efficiency
-- More playmaking responsibility from centers and forwards
-- Differences between home and away performance
-- Player and team trends across multiple seasons
+- Game ID
+- Attendance number
+- Home team
+- Away team
+- Game date
+- Home city
+- Away city
+- Team identifiers
 
-The dataset also covers the full period of the Nets' move to Barclays Center, making it relevant for team-specific business analysis if future arena, attendance, and ticketing datasets are added.
+Synthetic attendance was added so the system could support business-style questions such as:
 
-### Future Data Extensions
+```text
+Which teams had the highest average attendance?
+```
 
-The next step would be to append richer business datasets, including:
+```text
+What games had the largest crowds?
+```
 
-- Attendance data
+```text
+Did players score more in higher-attendance games?
+```
+
+```text
+What was the average attendance for games Stephen Curry played in?
+```
+
+Because attendance is game-level data and player statistics are player-game-level data, the system must generate joins when a question requires both datasets.
+
+---
+
+## Reason for Dataset Selection
+
+I chose NBA player box score data because it is an expansive sports dataset with rich statistical fields. It allows the agent to answer questions about player performance, team trends, scoring, efficiency, three-point shooting, assists, rebounds, home/away performance, attendance patterns, and changes in play style over time.
+
+Because the dataset spans 2010-2023, it can support analysis across a meaningful multi-year window.
+
+The synthetic attendance layer expands the project from pure player performance analytics into early sports business analytics. It allows the agent to answer questions that combine basketball performance with game-level demand indicators.
+
+Examples include:
+
+```text
+Which players scored the most points in the highest-attendance games?
+```
+
+```text
+Which home teams had the highest average attendance?
+```
+
+```text
+How did attendance vary by season?
+```
+
+
+
+---
+
+## Future Data Extensions
+
+The current attendance data is synthetic. In a production version, this would be replaced or supplemented with live or regularly refreshed attendance data from official or internal data sources.
+
+Future attendance improvements would include:
+
+- Live attendance data ingestion
+- Automated attendance refresh jobs
+- Official arena attendance records
+- Ticket sales data
+- Paid attendance vs scanned attendance
+- Sell-through percentage
+- Arena capacity data
+- Promotional event metadata
+
+Additional business datasets could include:
+
 - Jersey sales
 - Ticket sales
 - Concession sales
@@ -149,8 +206,6 @@ The next step would be to append richer business datasets, including:
 - Team popularity and player popularity indicators
 
 These additions would enable questions such as:
-
-
 
 ```text
 Which players drive the largest attendance lift at Barclays Center, regardless of their current team?
@@ -172,6 +227,7 @@ Do star players increase concession sales when they play at Barclays Center?
 Which opposing teams or players create the largest revenue impact over time?
 ```
 
+
 The current dataset provides the player-performance foundation needed for this future business analytics layer.
 
 ---
@@ -189,7 +245,44 @@ OpenAI was selected because it provides a reliable inference endpoint, strong st
 
 The project is organized around a graph-based agent architecture. Each major responsibility is separated into a dedicated agent or node, making the system easier to understand, debug, and extend.
 
-### High-Level Architecture
+
+---
+
+## SQL Agent
+
+The SQL agent converts a valid natural language analytics question into a DuckDB-compatible `SELECT` query.
+
+It receives the current database schema as context and is instructed to:
+
+- Generate only `SELECT` statements
+- Use only available tables and columns
+- Prefer clear aliases
+- Limit result sizes unless the user asks otherwise
+- Join tables only when needed
+- Avoid double-counting game-level attendance data
+
+The SQL agent understands that the database contains two separate analytical tables:
+
+```text
+player_game_stats
+game_attendance
+```
+
+For player-only questions, it queries `player_game_stats`.
+
+For attendance-only questions, it queries `game_attendance`.
+
+For questions involving both player performance and attendance, it joins the tables using:
+
+```sql
+player_game_stats.player_stats_gameId = game_attendance.attendance_gameId
+```
+
+This design intentionally demonstrates multi-table natural language to SQL generation.
+
+---
+
+## High-Level Architecture
 
 ```text
 nlq-agent/
@@ -222,54 +315,17 @@ nlq-agent/
 │   │   └── error_node.py
 │   │
 │   └── prompts/
-│       └── Prompt templates for agents
+│       └── Prompt templates for intent, SQL, and insight agents
 │
 ├── scripts/
-│   └── Data loading and preprocessing scripts
+│   └── Data loading, synthetic attendance generation, and preprocessing scripts
 │
 ├── data/
-│   └── CSV files and local DuckDB database
+│   └── Player box score CSVs, synthetic attendance CSV, and local DuckDB database
 │
 └── tests/
     └── Agent and workflow tests
 ```
-
----
-
-## Directory Responsibilities
-
-### `agents/`
-
-The `agents/` directory contains LLM-powered components. These are responsible for reasoning tasks that benefit from language understanding.
-
-Agents include:
-
-- Intent classification
-- SQL generation
-- Insight summarization
-
-Each agent accepts the shared `NLQState`, performs one responsibility, and returns state updates.
-
-### `nodes/`
-
-The `nodes/` directory contains deterministic workflow steps. These are not primarily reasoning tasks and should be predictable.
-
-Nodes include:
-
-- SQL validation
-- SQL execution
-- Error handling
-- Non-database response handling
-
-These nodes are separated from agents so that safety and execution logic remain explicit and testable.
-
-### `prompts/`
-
-The `prompts/` directory stores reusable prompt templates. Keeping prompts outside agent implementation files improves readability and makes prompt iteration easier.
-
-This also makes it easier to add prompt versioning, few-shot examples, and evaluation-specific prompt variants in the future.
-
----
 
 ## Agent Responsibilities
 
@@ -471,7 +527,7 @@ Potential tradeoffs include:
 - More state management complexity
 - Requires careful consistency between agent outputs and graph routing keys
 
-I wanted to demonstrate a slightly more complex agent workflow while still keeping the function and focus of the application concise. This is why I went with a multi agent orchestration.
+I wanted to demonstrate a slightly more complex agent workflow while still keeping the function and focus of the application concise.
 
 ---
 
@@ -524,45 +580,36 @@ The state also supports the Gradio state viewer, where developers can inspect th
 The current implementation is intentionally focused to demonstrate natural language into sql back into natural language, while having error handling/validation steps.
 
 To make this a production application, the following areas would be expanded.
+---
 
 ---
 
 ## Production Data Expansion
 
-The current dataset focuses on NBA player box scores. A production analytics system should incorporate additional internal and external business datasets.
+The current implementation includes synthetic attendance data to demonstrate how the agent handles game-level business metrics alongside player-level basketball statistics.
 
-Potential additions include:
+A production system would replace synthetic attendance with live or regularly refreshed attendance data.
 
-- Attendance data
-- Ticket sales
-- Jersey sales
+Potential production data additions include:
+
+- Official attendance feeds
+- Ticketing system data
+- Ticket scans
+- Arena capacity data
+- Revenue data
 - Concession sales
-- Promotional events
-- Arena event calendars
-- Opponent popularity data
+- Merchandise sales
+- Promotional event calendars
+- Opponent popularity indicators
 - Player popularity metrics
-- Injury reports and availability
-- Broadcast and media exposure
-- Internal CRM or sales tooling
 
-These additions would allow the system to answer business questions such as:
+This would shift the system from player performance analytics toward broader sports business intelligence.
 
-```text
-Which players perform the best during the biggest games of the year?
-```
+Example future questions:
 
 ```text
-Which players drive ticket sales regardless of the team they currently play for?
+Which players drive the largest attendance lift?
 ```
-
-```text
-Which promotional events drive the highest ticket sales?
-```
-
-```text
-How do bobblehead nights compare to discounted ticket promotions?
-```
-
 
 ```text
 Which games generate the highest combined revenue from tickets, concessions, and merchandise?
@@ -573,9 +620,8 @@ Do nationally televised games produce higher attendance or merchandise sales?
 ```
 
 ```text
-How does the attendance change in games after a major trade or player signing?
+How does attendance change after a major trade or player signing?
 ```
-
 
 This would shift the system from player performance analytics toward broader sports business intelligence.
 
@@ -827,3 +873,10 @@ A production deployment should also include:
 - Model versioning
 - Monitoring and alerting
 - User feedback loop
+
+
+
+## Ai Tool Usage
+
+- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4
+=======

@@ -113,6 +113,8 @@ The assistant will:
 
 Questions the agent can answer:
 
+- Who scored the most points in a game with attendance over 20,000?
+- Which team had the highest attendance in 2023?                                
 - Who scored the most points in a single game during the 2023 season?
 - What was LeBron James' average points per game in 2022?
 - Which Warriors players had 30+ points in a game?
@@ -128,7 +130,7 @@ The app will reject unsupported questions and explain why.
 Which players scored the most points in 2007?
 
 **Reason:**  
-Data is only from 2010 to 2024 NBA season.
+Data is only from 2010 to 2023 NBA season.
 
 ---
 
@@ -159,18 +161,10 @@ The question is unrelated to NBA statistics.
 
 ---
 
-### Missing schema fields
-**Question:**  
-Which Canadian players scored 40+ points?
-
-**Reason:**  
-Player birthplace information is not available.
-
----
 
 ## Tip
 
-Stick to questions about **players, teams, games, seasons, and box-score statistics**.
+Stick to questions about **players, teams, games, seasons, game attendance, and box-score statistics**.
 
 Check the **Full State**, **Generated SQL**, and **SQL Results** tabs to understand how the agent processed your question.
 """

@@ -21,10 +21,13 @@ def validation_node(state: NLQState) -> dict:
 
     normalized_sql = sql.strip().upper()
 
-    if not normalized_sql.startswith("SELECT"):
+    if not (
+        normalized_sql.startswith("SELECT")
+        or normalized_sql.startswith("WITH")
+    ):
         return {
             "is_valid_sql": False,
-            "validation_error": "Only SELECT queries are allowed.",
+            "validation_error": "Only read-only queries are allowed.",
         }
 
     for operation in INVALID_OPERATIONS:

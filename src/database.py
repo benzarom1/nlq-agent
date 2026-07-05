@@ -18,7 +18,6 @@ class DatabaseResource:
     def get_schema(self) -> str:
         with self.connect() as conn:
             tables = conn.execute("SHOW TABLES").fetchall()
-
             schema_parts = []
             for (table_name,) in tables:
                 columns = conn.execute(f"DESCRIBE {table_name}").fetchdf()

@@ -6,6 +6,72 @@ The application uses a graph-based agent architecture for interpretability, SQL 
 
 ---
 
+## Table of Contents
+
+
+- [Startup Guide](#startup-guide)
+  - [Prerequisites](#1-prerequisites)
+  - [Create Virtual Environment](#2-create-virtual-environment)
+  - [Installation](#3-installation)
+  - [Environment Configuration](#4-ensure-env-file-is-initialized)
+  - [Launch Application](#5-launch-application)
+
+- [Dataset Choice](#dataset-choice)
+  - [Dataset Tables](#dataset-tables)
+  - [Game Attendance Table](#game-attendance-table)
+  - [Synthetic Attendance Data](#synthetic-attendance-data)
+  - [Reason for Dataset Selection](#reason-for-dataset-selection)
+  - [Future Data Extensions](#future-data-extensions)
+
+- [Foundational Model Choice](#foundational-model-choice)
+
+- [Code Quality and Architecture](#code-quality-and-architecture)
+  - [SQL Agent](#sql-agent)
+  - [High-Level Architecture](#high-level-architecture)
+
+- [Agent Responsibilities](#agent-responsibilities)
+  - [Intent Agent](#intent-agent)
+  - [SQL Agent](#sql-agent-1)
+  - [Insight Agent](#insight-agent)
+  - [Configuration Strategy](#configuration-strategy)
+
+- [Node Responsibilities](#node-responsibilities)
+  - [SQL Validation Node](#sql-validation-node)
+  - [SQL Execution Node](#sql-execution-node)
+  - [Non-Database Response Node](#non-database-response-node)
+  - [Error Node](#error-node)
+
+- [Graph Architecture](#graph-architecture)
+  - [Architectural Decisions](#architectural-decisions)
+  - [Tradeoffs](#tradeoffs)
+
+- [NLQState](#nlqstate)
+
+- [Future Next Steps](#future-next-steps)
+  - [Production Data Expansion](#production-data-expansion)
+  - [Production Architecture Improvements](#production-architecture-improvements)
+    - [BaseAgent Abstraction](#baseagent-abstraction)
+    - [Stronger Agent Validation](#stronger-agent-validation)
+    - [Improved Error Recovery](#improved-error-recovery)
+    - [Clarification Agent](#clarification-agent)
+
+- [Testing Infrastructure](#testing-infrastructure)
+  - [Golden Evaluation Set](#golden-evaluation-set)
+
+- [Foundational Model Evaluation](#foundational-model-evaluation)
+  - [Amazon Bedrock Integration](#amazon-bedrock-integration)
+  - [A/B Testing](#ab-testing)
+  - [Metrics to Track](#metrics-to-track)
+  - [Cost Optimization](#cost-optimization)
+
+- [Production Observability](#production-observability)
+
+- [Additional Production Requirements](#additional-production-requirements)
+
+- [AI Tool Usage](#ai-tool-usage)
+
+---
+
 ## Startup Guide
 
 ### 1. Prerequisites

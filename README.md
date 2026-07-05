@@ -20,7 +20,7 @@ The application uses a graph-based agent architecture for interpretability, SQL 
 Clone the repository and install Python dependencies:
 
 ```bash
-git clone <repo_url>
+git clone https://github.com/benzarom1/nlq-agent
 cd nlq-agent
 python3 -m venv .venv
 source .venv/bin/activate

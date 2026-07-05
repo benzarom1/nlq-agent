@@ -6,6 +6,39 @@ The application uses a graph-based agent architecture for interpretability, SQL 
 
 ---
 
+## Startup Guide
+
+### 1. Prerequisites
+
+- Python 3.9+
+- OpenAI API key (in `.env`)
+- game_data_enriched.csv (in `data/`)
+- A DuckDB database file already available (no need to initialize)
+
+### 2. Installation
+
+Clone the repository and install Python dependencies:
+
+```bash
+git clone <repo_url>
+cd nlq-agent
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 3. Add .env file:
+
+```
+OPENAI_API_KEY=<KEY>
+```
+
+### 4. Launch the Application
+```
+python app.py
+```
+
+
 ## Dataset Choice
 
 This project uses an NBA player box score dataset covering the 2010-2023 seasons, along with a synthetic attendance dataset generated for each game.
@@ -306,14 +339,8 @@ nlq-agent/
 │   └── prompts/
 │       └── Prompt templates for intent, SQL, and insight agents
 │
-├── scripts/
-│   └── Data loading, synthetic attendance generation, and preprocessing scripts
-│
 ├── data/
-│   └── Player box score CSVs, synthetic attendance CSV, and local DuckDB database
-│
-└── tests/
-    └── Agent and workflow tests
+│   └── local DuckDB database
 ```
 
 ## Agent Responsibilities
@@ -868,4 +895,4 @@ These were intentionally left out of the current implementation because the exer
 
 ## Ai Tool Usage
 
-- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4
+- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4.

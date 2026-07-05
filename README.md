@@ -61,6 +61,17 @@ The reason for not merging the player statistics and attendance data into one ta
 ---
 
 ## Player Game Stats Table
+=======
+### 3. Add .env file:
+
+```
+OPENAI_API_KEY= <KEY HERE>
+```
+
+### 4. Launch the Application
+```
+python app.py
+```
 
 The `player_game_stats` table stores player box score data at the player-game level.
 
@@ -415,7 +426,7 @@ This agent exists to separate analytical execution from user-facing communicatio
 ---
 
 
-### Configuration Strategy**
+### Configuration Strategy
 
 - **Intent agent:** Use small, cheap LLMs for structured classification.
 - **SQL agent:** Use strong models for precise SQL translation from NLQ (zero temperature).
@@ -890,9 +901,9 @@ A production deployment should also include:
 - Monitoring and alerting
 - User feedback loop
 
-These were intentionally left out of the current implementation because the exercise prioritizes agent logic, code quality, and clear reasoning over production infrastructure.
 
 
 ## Ai Tool Usage
 
-- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4.
+- GitHub Copilot: OpenAi Gpt-4.1, Gpt-5.4
+=======

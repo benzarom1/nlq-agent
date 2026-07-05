@@ -415,7 +415,7 @@ This agent exists to separate analytical execution from user-facing communicatio
 ---
 
 
-### Configuration Strategy (Summary):**
+### Configuration Strategy**
 
 - **Intent agent:** Use small, cheap LLMs for structured classification.
 - **SQL agent:** Use strong models for precise SQL translation from NLQ (zero temperature).

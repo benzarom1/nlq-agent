@@ -38,6 +38,11 @@ OPENAI_API_KEY=<KEY>
 python app.py
 ```
 
+### 5. Open on
+```
+http://127.0.0.1:7860
+```
+**Google Chrome reccomended for best Gradio Support**
 
 ## Dataset Choice
 

@@ -111,21 +111,6 @@ These tables are intentionally kept separate.
 
 The reason for not merging the player statistics and attendance data into one table is to demonstrate multi-table SQL query generation. This allows the SQL agent to reason about when joins are necessary and generate queries that combine player-level and game-level data correctly.
 
----
-
-## Player Game Stats Table
-=======
-### 3. Add .env file:
-
-```
-OPENAI_API_KEY= <KEY HERE>
-```
-
-### 4. Launch the Application
-```
-python app.py
-```
-
 The `player_game_stats` table stores player box score data at the player-game level.
 
 Each row represents one player's performance in one NBA game.

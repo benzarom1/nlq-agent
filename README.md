@@ -78,7 +78,17 @@ pip install -r requirements.txt
 
 ---
 
-### 4. Launch Application
+### 4. Ensure .env file is initialized:
+
+- In directory: nlq-agent create .env file.
+- Initialize .env file with OPENAI_API_KEY
+- Example is given in .env.template
+```
+OPENAI_API_KEY=<API-KEY>
+```
+
+
+### 5. Launch Application
 
 Run:
 

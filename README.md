@@ -91,7 +91,7 @@ Open:
 ```text
 http://localhost:7860/
 ```
-
+**Use Google Chrome for best Gradio support**
 ## Dataset Choice
 
 This project uses an NBA player box score dataset covering the 2010-2023 seasons, along with a synthetic attendance dataset generated for each game.

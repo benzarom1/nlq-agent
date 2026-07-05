@@ -28,17 +28,19 @@ pip install -r requirements.txt
 ```
 
 ### 3. Add .env file:
-
+- Create .env file and place in nlq-agent directory. 
+- Ensure it is initialized with OPENAI_API_KEY.
+- View .env.template for example .env file.
 ```
 OPENAI_API_KEY=<KEY>
 ```
 
-### 4. Launch the Application
+### 4. Launch the Application:
 ```
 python app.py
 ```
 
-### 5. Open on
+### 5. Navigate  to:
 ```
 http://127.0.0.1:7860
 ```
